@@ -103,7 +103,7 @@ public class Audio extends GUI implements ActionListener {
         try {
             fileInputStream = new FileInputStream(path);
             totalLength = fileInputStream.available();
-            progressSong.setMaximum((int) getFileLength() / 60);
+            progressSong.setMaximum(((int) getFileLength() / 60 )* 100);
             System.out.println("Time: " + (int)getFileLength() / 60 + "." + getFileLength() % 60);
                     if(pos > -1)
                         fileInputStream.skip(pos);
@@ -117,8 +117,7 @@ public class Audio extends GUI implements ActionListener {
                 () -> {
                     try {
                         player.play();
-                        progressSong.setValue(Integer.parseInt(player.toString()));
-                    } catch (JavaLayerException e) {
+                        } catch (JavaLayerException e) {
                         valid = false;
                     }
                 }).start();

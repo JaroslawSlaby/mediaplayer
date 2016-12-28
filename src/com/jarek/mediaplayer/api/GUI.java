@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 /**
@@ -48,10 +50,19 @@ public class GUI extends JFrame implements ActionListener{
         container.add(songTitle, BorderLayout.EAST);
         container.add(controlPanel, BorderLayout.SOUTH);
         container.add(progressSong, BorderLayout.WEST);
+        //window listener
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        //continue
         setTitle("JS - Media Player");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
+
     }
     public void actionPerformed(ActionEvent e) {
 
