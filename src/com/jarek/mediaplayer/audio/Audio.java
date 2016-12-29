@@ -2,7 +2,6 @@ package com.jarek.mediaplayer.audio;
 
 import com.jarek.mediaplayer.api.GUI;
 import com.jarek.mediaplayer.api.PlayerFunctions;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
@@ -10,16 +9,14 @@ import java.io.FileInputStream;
 
 /**
  * Created by jarek on 12/15/16.
+ *
  */
 public class Audio extends GUI implements ActionListener {
 
     public FileInputStream fileInputStream;
     public BufferedInputStream bufferedInputStream;
-
     private PlayerFunctions playerFunctions;
-
     private boolean stopped = true;
-
     public int i = 0;
 
     private Audio() {
@@ -39,7 +36,6 @@ public class Audio extends GUI implements ActionListener {
 //            }
 //        });
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -73,22 +69,25 @@ public class Audio extends GUI implements ActionListener {
             i++;
                 if(i == fileList.size()) {
                     playerFunctions.Stop();
-                    playerFunctions.Play(fileList.get(0).getAbsolutePath(), -1);
-                    songTitle.setText(fileList.get(0).getName());
+                    i = 0;
+                    playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
+                    songTitle.setText(fileList.get(i).getName());
                 }
                 else if(i < fileList.size()){
                     playerFunctions.Stop();
                     playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
                     songTitle.setText(fileList.get(i).getName());
                 }
+                else
+                    i = 0;
         }
         else if(e.getSource() == previousButton) {
             i--;
                 if(i < 0) {
-                    i = fileList.size();
+                    i = fileList.size() - 1;
                     playerFunctions.Stop();
-                    playerFunctions.Play(fileList.get(i-1).getAbsolutePath(), -1);
-                    songTitle.setText(fileList.get(i-1).getName());
+                    playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
+                    songTitle.setText(fileList.get(i).getName());
                 }
                 else {
                     playerFunctions.Stop();

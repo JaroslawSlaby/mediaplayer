@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Created by jarek on 12/15/16.
+ *
  */
 public class GUI extends JFrame implements ActionListener{
     //GUI
@@ -89,6 +90,7 @@ public class GUI extends JFrame implements ActionListener{
             {
                 File folder = fileChooser.getSelectedFile();
                 File[] files = folder.listFiles();
+                assert files != null;
                 for (File file1 : files) {
                     if (file1.isFile()) {
                         fileList.add(i, file1);

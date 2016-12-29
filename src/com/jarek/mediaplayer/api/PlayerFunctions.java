@@ -16,7 +16,6 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
-
 /**
  * Created by jarek on 12/29/16.
  */
@@ -26,7 +25,6 @@ public class PlayerFunctions {
     private long totalLength;
     private boolean canResume = false;
     private boolean valid = false;
-
     private Audio audioPlayer;
 
     public PlayerFunctions(Audio audioPlayer) {
