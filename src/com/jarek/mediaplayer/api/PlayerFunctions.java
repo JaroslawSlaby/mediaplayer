@@ -27,6 +27,9 @@ public class PlayerFunctions {
     private boolean valid = false;
     private Audio audioPlayer;
 
+    PlayerFunctions() {
+    }
+
     public PlayerFunctions(Audio audioPlayer) {
         this.audioPlayer = audioPlayer;
     }

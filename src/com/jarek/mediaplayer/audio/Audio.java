@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.util.Random;
 
 /**
  * Created by jarek on 12/15/16.
@@ -18,6 +19,7 @@ public class Audio extends GUI implements ActionListener {
     private PlayerFunctions playerFunctions;
     private boolean stopped = true;
     public int i = 0;
+    private Random random = new Random();
 
     private Audio() {
         super();
@@ -67,33 +69,40 @@ public class Audio extends GUI implements ActionListener {
         }
         else if(e.getSource() == nextButton) {
             i++;
-                if(i == fileList.size()) {
+            if (!shuffleChooser.isSelected()) {
+                if (i == fileList.size()) {
                     playerFunctions.Stop();
                     i = 0;
-                    playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
-                    songTitle.setText(fileList.get(i).getName());
-                }
-                else if(i < fileList.size()){
+                    playOther(i);
+                } else if (i < fileList.size()) {
                     playerFunctions.Stop();
-                    playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
-                    songTitle.setText(fileList.get(i).getName());
-                }
-                else
+                    playOther(i);
+                } else
                     i = 0;
+            }
+            else if(shuffleChooser.isSelected()) {
+                i = random.nextInt(fileList.size());
+                playerFunctions.Stop();
+                playOther(i);
+            }
         }
         else if(e.getSource() == previousButton) {
             i--;
-                if(i < 0) {
+            if (!shuffleChooser.isSelected()) {
+                if (i < 0) {
                     i = fileList.size() - 1;
                     playerFunctions.Stop();
-                    playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
-                    songTitle.setText(fileList.get(i).getName());
-                }
-                else {
+                    playOther(i);
+                } else {
                     playerFunctions.Stop();
-                    playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
-                    songTitle.setText(fileList.get(i).getName());
+                    playOther(i);
                 }
+            }
+            else if(shuffleChooser.isSelected()) {
+                i = random.nextInt(fileList.size());
+                playerFunctions.Stop();
+                playOther(i);
+            }
         }
     }
 
@@ -101,4 +110,10 @@ public class Audio extends GUI implements ActionListener {
         Audio audio = new Audio();
         audio.makeGUI();
     }
+
+    private void playOther(int trackNumber) {
+        playerFunctions.Play(fileList.get(trackNumber).getAbsolutePath(), -1);
+        songTitle.setText(fileList.get(trackNumber).getName());
+    }
+
 }

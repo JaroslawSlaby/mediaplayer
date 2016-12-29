@@ -28,11 +28,13 @@ public class GUI extends JFrame implements ActionListener{
     protected JButton nextButton = new JButton("NEXT");
     protected JButton previousButton = new JButton("BACK");
     protected JTextField songTitle = new JTextField("sample");
+    protected JRadioButton shuffleChooser = new JRadioButton("Shuffle");
     protected JProgressBar progressSong = new JProgressBar();
     protected AdvancedPlayer player;
     protected ArrayList<File> fileList = new ArrayList<>();
     protected boolean isPlaying = false;
     private int i = 0;
+    private PlayerFunctions playerFunctions = new PlayerFunctions();
 
     protected void makeGUI(){
 
@@ -52,10 +54,12 @@ public class GUI extends JFrame implements ActionListener{
         file.add(openFile);
         file.add(openFolder);
         mainMenu.add(file);
+        //shuffleChooser.
         container.add(mainMenu, BorderLayout.NORTH);
         container.add(songTitle, BorderLayout.EAST);
         container.add(controlPanel, BorderLayout.SOUTH);
         container.add(progressSong, BorderLayout.WEST);
+        container.add(shuffleChooser, BorderLayout.WEST);
         //window listener
         addWindowListener(new WindowAdapter() {
             @Override
@@ -74,13 +78,22 @@ public class GUI extends JFrame implements ActionListener{
 
         if(e.getSource() == openFile) {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.showOpenDialog(this);
-                    fileList.add(i, fileChooser.getSelectedFile());
-                    i++;
-                if(!fileList.isEmpty())
+            int choose = fileChooser.showOpenDialog(this);
+            if(choose == JFileChooser.APPROVE_OPTION) {
+                fileList.add(i, fileChooser.getSelectedFile());
+                    if(isPlaying) {
+                        player.close();
+                        isPlaying = false;
+                        playPauseButton.setText("PLAY");
+                    }
+                if (!fileList.isEmpty()) {
                     songTitle.setText(fileList.get(0).getName());
+                }
                 else
                     songTitle.setText("No file selected!");
+            }
+            else
+                songTitle.setText("Cancelled by user!");
         }
         else if(e.getSource() == openFolder) {
             JFileChooser fileChooser = new JFileChooser();
@@ -97,6 +110,7 @@ public class GUI extends JFrame implements ActionListener{
                         i++;
                     }
                 }
+                songTitle.setText(fileList.get(0).getName());
             }
         }
     }
