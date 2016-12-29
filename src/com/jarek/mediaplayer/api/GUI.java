@@ -20,7 +20,8 @@ public class GUI extends JFrame implements ActionListener{
     private JPanel controlPanel = new JPanel();
     private JMenuBar mainMenu = new JMenuBar();
     private JMenu file = new JMenu("File");
-    private JMenuItem openFile = new JMenuItem("Open");
+    private JMenuItem openFile = new JMenuItem("Open file");
+    private JMenuItem openFolder = new JMenuItem("Open folder");
     protected JButton playPauseButton = new JButton("PLAY");
     protected JButton stopButton = new JButton("STOP");
     protected JButton nextButton = new JButton("NEXT");
@@ -37,6 +38,7 @@ public class GUI extends JFrame implements ActionListener{
         songTitle.setEditable(false);
         //action_listeners here
         openFile.addActionListener(this);
+        openFolder.addActionListener(this);
         //
         Container container = getContentPane();
         progressSong.setMinimum(0);
@@ -47,6 +49,7 @@ public class GUI extends JFrame implements ActionListener{
         controlPanel.add(stopButton);
         controlPanel.add(nextButton);
         file.add(openFile);
+        file.add(openFolder);
         mainMenu.add(file);
         container.add(mainMenu, BorderLayout.NORTH);
         container.add(songTitle, BorderLayout.EAST);
@@ -77,6 +80,22 @@ public class GUI extends JFrame implements ActionListener{
                     songTitle.setText(fileList.get(0).getName());
                 else
                     songTitle.setText("No file selected!");
+        }
+        else if(e.getSource() == openFolder) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int choose = fileChooser.showOpenDialog(this);
+            if(choose == JFileChooser.APPROVE_OPTION)
+            {
+                File folder = fileChooser.getSelectedFile();
+                File[] files = folder.listFiles();
+                for (File file1 : files) {
+                    if (file1.isFile()) {
+                        fileList.add(i, file1);
+                        i++;
+                    }
+                }
+            }
         }
     }
 }
