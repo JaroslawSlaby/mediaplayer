@@ -11,15 +11,12 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -37,12 +34,25 @@ public class Audio extends GUI implements ActionListener {
     private boolean valid = false;
     private boolean stopped = true;
 
+    private int i = 0;
+
     private Audio() {
         super();
         playPauseButton.addActionListener(this);
         stopButton.addActionListener(this);
         nextButton.addActionListener(this);
+        previousButton.addActionListener(this);
+
+//        nextButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                Pause();
+//                Plus10seconds();
+//                Resume();
+//            }
+//        });
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -55,8 +65,8 @@ public class Audio extends GUI implements ActionListener {
         }
         else if (e.getSource() == playPauseButton) {
             if (!isPlaying && stopped) {
-                if (newFile != null) {
-                    Play(newFile.getAbsolutePath(), -1);
+                if (fileList != null) {
+                    Play(fileList.get(i).getAbsolutePath(), -1);
                     isPlaying = true;
                     stopped = false;
                     playPauseButton.setText("PAUSE");
@@ -73,9 +83,27 @@ public class Audio extends GUI implements ActionListener {
             }
         }
         else if(e.getSource() == nextButton) {
-            Pause();
-            plus10seconds();
-            Resume();
+            i++;
+                if(i == fileList.size()) {
+                    Stop();
+                    Play(fileList.get(0).getAbsolutePath(), -1);
+                }
+                else if(i < fileList.size()){
+                    Stop();
+                    Play(fileList.get(i).getAbsolutePath(), -1);
+                }
+        }
+        else if(e.getSource() == previousButton) {
+            i--;
+                if(i < 0) {
+                    i = fileList.size();
+                    Stop();
+                    Play(fileList.get(i-1).getAbsolutePath(), -1);
+                }
+                else {
+                    Stop();
+                    Play(fileList.get(i).getAbsolutePath(), -1);
+                }
         }
     }
 
@@ -91,9 +119,11 @@ public class Audio extends GUI implements ActionListener {
                 fileInputStream = null;
                 bufferedInputStream = null;
                 player = null;
+                progressSong.setValue((int)pauseLocation);
                 if(valid) canResume = true;
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "IO Error! Check this out!", "Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "IO Error! Check this out!",
+                        "Error!", JOptionPane.ERROR_MESSAGE);
             }
     }
 
@@ -121,22 +151,20 @@ public class Audio extends GUI implements ActionListener {
                         valid = false;
                     }
                 }).start();
-
         return valid;
     }
 
     private void Resume() {
         if(!canResume) return;
-        if(Play(newFile.getAbsolutePath(),totalLength - pauseLocation)) {
+        if(Play(fileList.get(i).getAbsolutePath(),totalLength - pauseLocation)) {
             canResume = false;
         }
     }
 
     private double getFileLength() {
-
         double duration = 0;
         try {
-            AudioFile audioFile = AudioFileIO.read(newFile);
+            AudioFile audioFile = AudioFileIO.read(fileList.get(i));
             duration = audioFile.getAudioHeader().getTrackLength();
         } catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
             e.printStackTrace();
@@ -144,20 +172,12 @@ public class Audio extends GUI implements ActionListener {
         return duration;
     }
 
-    private double getCurrentPosition() {
-
-        double duration = 0;
-        try {
-            AudioFile audioFile = AudioFileIO.read(newFile);
-            duration = audioFile.getAudioHeader().getTrackLength();
-        } catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-            e.printStackTrace();
-        }
-        return duration;
-    }
-
-    private void plus10seconds() {
+    private void Plus10seconds() {
         pauseLocation += (getFileLength() % 60);
+    }
+
+    private void Minus10seconds() {
+        pauseLocation -=(getFileLength() % 60);
     }
 
     public static void main(String[] args) {

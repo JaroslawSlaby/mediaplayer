@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by jarek on 12/15/16.
@@ -23,12 +24,13 @@ public class GUI extends JFrame implements ActionListener{
     protected JButton playPauseButton = new JButton("PLAY");
     protected JButton stopButton = new JButton("STOP");
     protected JButton nextButton = new JButton("NEXT");
-    private JButton previousButton = new JButton("BACK");
+    protected JButton previousButton = new JButton("BACK");
     private JTextField songTitle = new JTextField("sample");
     protected JProgressBar progressSong = new JProgressBar();
     protected AdvancedPlayer player;
-    protected File newFile;
+    protected ArrayList<File> fileList = new ArrayList<>();
     protected boolean isPlaying = false;
+    private int i = 0;
 
     protected void makeGUI(){
 
@@ -69,18 +71,12 @@ public class GUI extends JFrame implements ActionListener{
         if(e.getSource() == openFile) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.showOpenDialog(this);
-            newFile = fileChooser.getSelectedFile();
-            if(newFile != null)
-                songTitle.setText(newFile.getName());
-            else
-                songTitle.setText("No file selected!");
-
-        } //
-
-    }
-
-    public static void main(String[] args) {
-        GUI gui = new GUI();
-        gui.makeGUI();
+                    fileList.add(i, fileChooser.getSelectedFile());
+                    i++;
+                if(!fileList.isEmpty())
+                    songTitle.setText(fileList.get(0).getName());
+                else
+                    songTitle.setText("No file selected!");
+        }
     }
 }
