@@ -26,7 +26,7 @@ public class GUI extends JFrame implements ActionListener{
     protected JButton stopButton = new JButton("STOP");
     protected JButton nextButton = new JButton("NEXT");
     protected JButton previousButton = new JButton("BACK");
-    private JTextField songTitle = new JTextField("sample");
+    protected JTextField songTitle = new JTextField("sample");
     protected JProgressBar progressSong = new JProgressBar();
     protected AdvancedPlayer player;
     protected ArrayList<File> fileList = new ArrayList<>();
