@@ -1,6 +1,7 @@
 package com.jarek.mediaplayer;
 
 import com.jarek.mediaplayer.api.GUI;
+import com.jarek.mediaplayer.audio.Audio;
 
 
 /**
@@ -10,6 +11,8 @@ import com.jarek.mediaplayer.api.GUI;
 public class Main extends GUI {
 
     public static void main(String[] args) {
+        Audio audio = new Audio();
+        audio.makeGUI();
 
     }
 }

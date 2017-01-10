@@ -34,9 +34,9 @@ public class GUI extends JFrame implements ActionListener{
     protected ArrayList<File> fileList = new ArrayList<>();
     protected boolean isPlaying = false;
     private int i = 0;
-    private PlayerFunctions playerFunctions = new PlayerFunctions();
+    //private PlayerFunctions playerFunctions = new PlayerFunctions();
 
-    protected void makeGUI(){
+    public void makeGUI(){
 
         songTitle.setEditable(false);
         //action_listeners here
@@ -111,6 +111,8 @@ public class GUI extends JFrame implements ActionListener{
                     }
                 }
                 songTitle.setText(fileList.get(0).getName());
+//                for(int z = 0; z < fileList.size(); z++)
+//                    System.out.println(z + ": " + fileList.get(z).getName().toString());
             }
         }
     }

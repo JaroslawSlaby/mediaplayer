@@ -2,6 +2,7 @@ package com.jarek.mediaplayer.audio;
 
 import com.jarek.mediaplayer.api.GUI;
 import com.jarek.mediaplayer.api.PlayerFunctions;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
@@ -21,7 +22,7 @@ public class Audio extends GUI implements ActionListener {
     public int i = 0;
     private Random random = new Random();
 
-    private Audio() {
+    public Audio() {
         super();
         playerFunctions = new PlayerFunctions(this);
         playPauseButton.addActionListener(this);
@@ -47,8 +48,7 @@ public class Audio extends GUI implements ActionListener {
             stopped = true;
             isPlaying = false;
             playPauseButton.setText("PLAY");
-        }
-        else if (e.getSource() == playPauseButton) {
+        } else if (e.getSource() == playPauseButton) {
             if (!isPlaying && stopped) {
                 if (fileList != null) {
                     playerFunctions.Play(fileList.get(i).getAbsolutePath(), -1);
@@ -66,10 +66,9 @@ public class Audio extends GUI implements ActionListener {
                 playPauseButton.setText("PAUSE");
                 playerFunctions.Resume();
             }
-        }
-        else if(e.getSource() == nextButton) {
-            i++;
+        } else if (e.getSource() == nextButton) {
             if (!shuffleChooser.isSelected()) {
+                i++;
                 if (i == fileList.size()) {
                     playerFunctions.Stop();
                     i = 0;
@@ -79,16 +78,14 @@ public class Audio extends GUI implements ActionListener {
                     playOther(i);
                 } else
                     i = 0;
-            }
-            else if(shuffleChooser.isSelected()) {
-                i = random.nextInt(fileList.size());
+            } else {
+                i = randomNumber(i, fileList.size());
                 playerFunctions.Stop();
                 playOther(i);
             }
-        }
-        else if(e.getSource() == previousButton) {
-            i--;
+        } else if (e.getSource() == previousButton) {
             if (!shuffleChooser.isSelected()) {
+                i--;
                 if (i < 0) {
                     i = fileList.size() - 1;
                     playerFunctions.Stop();
@@ -97,23 +94,28 @@ public class Audio extends GUI implements ActionListener {
                     playerFunctions.Stop();
                     playOther(i);
                 }
-            }
-            else if(shuffleChooser.isSelected()) {
-                i = random.nextInt(fileList.size());
+            } else {
+                i = randomNumber(i, fileList.size());
                 playerFunctions.Stop();
                 playOther(i);
             }
         }
     }
 
-    public static void main(String[] args) {
-        Audio audio = new Audio();
-        audio.makeGUI();
-    }
+   // public static void main(String[] args) {
+   //     Audio audio = new Audio();
+   //     audio.makeGUI();
+   // }
 
     private void playOther(int trackNumber) {
         playerFunctions.Play(fileList.get(trackNumber).getAbsolutePath(), -1);
         songTitle.setText(fileList.get(trackNumber).getName());
+    }
+
+    private int randomNumber(int currentNumber, int n) {
+
+        int number = random.nextInt(n);
+        return number;
     }
 
 }
