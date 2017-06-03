@@ -13,6 +13,5 @@ public class Main extends GUI {
     public static void main(String[] args) {
         Audio audio = new Audio();
         audio.makeGUI();
-
     }
 }

@@ -36,6 +36,15 @@ public class GUI extends JFrame implements ActionListener{
     private int i = 0;
     //private PlayerFunctions playerFunctions = new PlayerFunctions();
 
+
+    public AdvancedPlayer getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(AdvancedPlayer player) {
+        this.player = player;
+    }
+
     public void makeGUI(){
 
         songTitle.setEditable(false);

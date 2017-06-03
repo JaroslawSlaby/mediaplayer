@@ -79,7 +79,7 @@ public class Audio extends GUI implements ActionListener {
                 } else
                     i = 0;
             } else {
-                i = randomNumber(i, fileList.size());
+                i = randomNumber(fileList.size());
                 playerFunctions.Stop();
                 playOther(i);
             }
@@ -95,27 +95,21 @@ public class Audio extends GUI implements ActionListener {
                     playOther(i);
                 }
             } else {
-                i = randomNumber(i, fileList.size());
+                i = randomNumber(fileList.size());
                 playerFunctions.Stop();
                 playOther(i);
             }
         }
     }
 
-   // public static void main(String[] args) {
-   //     Audio audio = new Audio();
-   //     audio.makeGUI();
-   // }
-
     private void playOther(int trackNumber) {
         playerFunctions.Play(fileList.get(trackNumber).getAbsolutePath(), -1);
         songTitle.setText(fileList.get(trackNumber).getName());
     }
 
-    private int randomNumber(int currentNumber, int n) {
+    private int randomNumber(int n) {
 
-        int number = random.nextInt(n);
-        return number;
+        return random.nextInt(n);
     }
 
 }
